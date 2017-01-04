@@ -12,6 +12,8 @@ import {
 
 import _ from 'lodash'
 
+import pstyles from '../private/styles'
+
 class TabItem extends Component {
   static propTypes = {
     ... View.propTypes,
@@ -29,8 +31,8 @@ class TabItem extends Component {
   }
   render() {
     return (
-      <TouchableWithoutFeedback style={[this.props.style, styles.no_padding]} onPress={e=>this.props.onSelected()}>
-      <View style={[this.props.style, styles.no_margin]}>
+      <TouchableWithoutFeedback style={[this.props.style, pstyles.no_padding]} onPress={e=>this.props.onSelected()}>
+      <View style={[this.props.style, pstyles.no_margin]}>
         <View style={styles.item_icon}>{this.state.isSelected && this.props.selectedIcon ? this.props.selectedIcon : this.props.icon}</View>
         <View style={styles.item_title}>{this.state.isSelected && this.props.selectedTitle ? this.props.selectedTitle : this.props.title}</View>
       </View>
@@ -64,7 +66,7 @@ class TabBar extends Component {
   }
   render() {
     return (
-      <View style={[styles.root, this.props.style, styles.root_tail, styles.no_padding]}>
+      <View style={[styles.root, this.props.style, styles.root_tail, pstyles.no_padding]}>
         <ScrollView 
           horizontal
           pagingEnabled
@@ -92,7 +94,6 @@ class TabBar extends Component {
               onSelected={e=>{
                 if (index === this.state.currentSelectedItemIndex) return;
                 this.selecteItemAtIndex(index);
-                if (child.props.onSelected) child.props.onSelected();
               }}
             />
           })
@@ -115,6 +116,8 @@ class TabBar extends Component {
     var item = this.refs[`TabItem${this.state.currentSelectedItemIndex}`];
     if (item) {
       item.setState({... item.state, isSelected: true});
+      item = this.props.children[index];
+      if (item.props.onSelected) item.props.onSelected();
     }
   }
 }
@@ -122,18 +125,8 @@ class TabBar extends Component {
 
 
 const styles = StyleSheet.create({
-  no_padding: {
-    padding: 0,
-    paddingVertical: 0,
-    paddingHorizontal: 0
-  },
-  no_margin: {
-    margin: 0,
-    marginVertical: 0,
-    marginHorizontal: 0
-  },
   root: {
-    backgroundColor: '#F6F6F6',
+    backgroundColor: '#FCFFFF',
     borderTopWidth: StyleSheet.hairlineWidth,
     borderTopColor: '#00000022'
   },
